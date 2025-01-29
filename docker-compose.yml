@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - app_data:/app/uploads   # Mount volume to /app/uploads
+      - app_data:/app/images    # Mount volume to /app/images
+      - app_data:/app/trailer   # Mount volume to /app/trailer
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/moviestream
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  app_data:    # This volume stores images, uploads, trailers
+  mongo_data:  # This volume stores MongoDB data
